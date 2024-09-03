@@ -6,7 +6,7 @@
 #    By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/03 12:04:24 by cyferrei          #+#    #+#              #
-#    Updated: 2024/09/03 13:18:43 by cyferrei         ###   ########.fr        #
+#    Updated: 2024/09/03 14:46:28 by cyferrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,8 @@ RESET   = \e[00m
 
 SOURCE = ./src/
 
-# PARSING = $(addprefix parsing/, ...)
-GAME = $(addprefix $(SOURCE), main.c)
+PARSING = $(addprefix parsing/, parser.c)
+GAME = $(addprefix $(SOURCE), $(PARSING) main.c)
 
 SRC = $(GAME)
 OBJ = $(SRC:%.c=%.o)
