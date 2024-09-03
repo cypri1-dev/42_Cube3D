@@ -6,7 +6,7 @@
 #    By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/03 12:04:24 by cyferrei          #+#    #+#              #
-#    Updated: 2024/09/03 14:46:28 by cyferrei         ###   ########.fr        #
+#    Updated: 2024/09/03 16:22:21 by cyferrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ RESET   = \e[00m
 
 SOURCE = ./src/
 
-PARSING = $(addprefix parsing/, parser.c)
+PARSING = $(addprefix parsing/, checker.c)
 GAME = $(addprefix $(SOURCE), $(PARSING) main.c)
 
 SRC = $(GAME)
