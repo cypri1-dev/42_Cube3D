@@ -6,12 +6,12 @@
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 16:10:46 by whamdi            #+#    #+#             */
-/*   Updated: 2024/09/03 13:36:21 by cyferrei         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:44:45 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // REVOIR 4. Calcul de la Direction de Chaque Rayon
-#include <stdio.h>
+
 #include "../includes/cub3D_lib.h"
 
 void init_player(t_data *data)
@@ -67,8 +67,11 @@ char map[MAP_HEIGHT][MAP_WIDTH + 1] = {
     "111111"
 };
 
-int main() {
+int main(int argc, char **argv, char **envp) 
+{
     t_data data;
+	checker(argc, argv, envp);
+	
 	// Afficher la carte pour vérification
     for (int i = 0; i < MAP_HEIGHT; i++) {
         printf("%s\n", map[i]);
