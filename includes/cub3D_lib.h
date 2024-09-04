@@ -6,7 +6,7 @@
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:20:45 by cyferrei          #+#    #+#             */
-/*   Updated: 2024/09/03 16:26:24 by cyferrei         ###   ########.fr       */
+/*   Updated: 2024/09/04 08:51:53 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@
 
 /*all structures*/
 
+typedef struct s_map
+{
+	char 	*line_map;
+	int	fd;
+}			t_map;
+
 typedef struct s_player
 {
 	int fov;
@@ -45,11 +51,12 @@ typedef struct s_player
 typedef struct s_data
 {
 	t_player player;
+	t_map	*map;
 	int wall;
 	int ground;
 }				t_data;
 
-/*strings functions prototypes*/
+/*strings functions*/
 
 int			ft_strlen(char *str);
 char		*ft_strrchr(const char *str, int searchedChar);
@@ -63,12 +70,22 @@ void		ft_putnbr_fd(int n, int fd);
 char		**ft_split(char const *s, char c);
 char		*ft_strstr(char *haystack, char *needle);
 
-/*parsing function*/
+/*checker functions*/
 
 void	checker(int argc, char **argv, char **envp);
 void	check_envp(char **envp);
 void	check_nb_args(int argc);
 void	check_extension(char **argv);
 int	ft_count_dot(char *argv, char c);
+
+/*parsing functions*/
+
+void	map_parser(t_data *data, char *file);
+void	init_map_struct(t_data *data);
+int	open_file(char *file);
+
+/*free functions*/
+
+void	free_map_struct(t_data *data);
 
 #endif
