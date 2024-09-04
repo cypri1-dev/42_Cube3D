@@ -6,12 +6,11 @@
 #    By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/16 12:46:52 by cyferrei          #+#    #+#              #
-#    Updated: 2024/09/03 13:32:40 by cyferrei         ###   ########.fr        #
+#    Updated: 2024/09/04 11:14:20 by cyferrei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = ft_itoa.c \
-		ft_printf.c \
 		ft_putchar_fd.c \
 		ft_putstr_fd.c \
 		ft_strchr.c \
@@ -53,10 +52,10 @@ $(NAME): $(OBJS) $(HEADER_FILE)
 	$(CC) $(FLAGS) -o $@ -c $<
 
 clean:
-	$(RM) $(OBJS)
+	@$(RM) $(OBJS) 2>/dev/null
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME) 2>/dev/null
 
 re: fclean all
 
