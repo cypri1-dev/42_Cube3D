@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   error_handler_one.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/04 10:37:37 by cyferrei          #+#    #+#             */
+/*   Created: 2024/09/05 11:24:01 by cyferrei          #+#    #+#             */
 /*   Updated: 2024/09/05 15:09:21 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D_lib.h"
 
-char	*new_alloc(t_data *data, char *ptr, int size)
+void	error_split_sett(t_data *data)
 {
-	char	*new;
+	free_split(data->file->tab_data);
+	free(data->file->map_line_cpy);
+	free(data->file);
+	error_msg("Fail to allocate memory for split_settings!");
+}
 
-	new = NULL;
-	free(ptr);
-	new = malloc((size + 1) * sizeof(char));
-	if (!new)
-	{
-		printf("\033[31mError\nFail to allocate memory for map_line!\n\033[0m");
-		free(data->file);
-		exit(EXIT_FAILURE);
-	}
-	return (new);
+void	error_order(t_data *data)
+{
+	free_split(data->file->tab_data);
+	free(data->file->map_line_cpy);
+	free(data->file);
+	error_msg("Wrong order!");
 }

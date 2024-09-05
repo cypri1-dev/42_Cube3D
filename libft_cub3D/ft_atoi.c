@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/04 10:37:37 by cyferrei          #+#    #+#             */
-/*   Updated: 2024/09/05 15:09:21 by cyferrei         ###   ########.fr       */
+/*   Created: 2024/09/05 16:14:17 by cyferrei          #+#    #+#             */
+/*   Updated: 2024/09/05 17:57:46 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3D_lib.h"
+#include "libft_cub3D.h"
 
-char	*new_alloc(t_data *data, char *ptr, int size)
+int	ft_atoi(const char *nbr)
 {
-	char	*new;
+	long	result;
+	long	sign;
 
-	new = NULL;
-	free(ptr);
-	new = malloc((size + 1) * sizeof(char));
-	if (!new)
+	sign = 1;
+	result = 0;
+	while (*nbr && (*nbr == ' ' || (*nbr >= 9 && *nbr <= 13)))
+		++nbr;
+	if (*nbr && (*nbr == '-' || *nbr == '+'))
 	{
-		printf("\033[31mError\nFail to allocate memory for map_line!\n\033[0m");
-		free(data->file);
-		exit(EXIT_FAILURE);
+		if (*nbr++ == '-')
+			sign *= -1;
 	}
-	return (new);
+	while (*nbr && (*nbr >= '0' && *nbr <= '9'))
+		result = (*nbr++ - '0') + result * 10;
+	return (result * sign);
 }
