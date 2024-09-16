@@ -6,121 +6,96 @@
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 10:10:18 by cyferrei          #+#    #+#             */
-/*   Updated: 2024/09/05 18:21:59 by cyferrei         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:01:07 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D_lib.h"
 
-int	detect_data(t_data *data, char *str)
+void	check_order(t_data *data)
 {
-	(void)data;
-	if (ft_strncmp(str, "F", 2) == 0)
-		return(F);
-	if (ft_strncmp(str, "C", 2) == 0)
-		return(C);
-	if (ft_strncmp(str, "EA", 3) == 0)
-		return(EA);
-	if (ft_strncmp(str, "NO", 3) == 0)
-		return(NO);
-	if (ft_strncmp(str, "WE", 3) == 0)
-		return(WE);
-	if (ft_strncmp(str, "SO", 3) == 0)
-		return(SO);
-	else
-		return (-1);
-}
+	int		i;
+	char	*str;
 
-int	extract_settings(t_data *data)
-{
-	int	i;
-	int	j;
-	int end_settings;
-	
 	i = ZERO_INIT;
-	j = ZERO_INIT;
-	end_settings = ZERO_INIT;
-	while(data->file->tab_data[i][j] != '1')
-	{
-		j = 0;
-		while(data->file->tab_data[i][j] == ' ' || data->file->tab_data[i][j] == '\t')
-			j++;
-		if (data->file->tab_data[i][j] != '1')
-			i++;
-	}
-	end_settings = i - 1;
-	return (end_settings);
-}
-
-void	extract_data(t_data *data)
-{
-	char	**split_settings;
-	int	end_settings;
-	int	i;
-	int	j;
-	
-	i = ZERO_INIT;
-	j = ZERO_INIT;
-	end_settings = ZERO_INIT;
-	split_settings = NULL;
-	end_settings = extract_settings(data);
-	while(data->file->tab_data[i] && i <= end_settings)
-	{
-		while(data->file->tab_data[i][j] == ' ' || data->file->tab_data[i][j] == '\t')
-			j++;
-		split_settings = ft_split(data->file->tab_data[i], ' ');
-		if (!split_settings)
-			error_split_sett(data);
-		int k = 0;
-		while(split_settings[k])
-		{
-			//printf("[%s]\n", split_settings[k]);
-			if(detect_data(data, split_settings[k]) == F) // || == C
-			{
-				printf("OK\n");
-				set_value(data, split_settings, detect_data(data, split_settings[k]));
-			}
-			k++;
-		}
-		printf("--\n");
+	str = data->file->map_line_cpy;
+	while (str[i])
 		i++;
-		free_split(split_settings);
-	}
-	printf("final R | - | -: %d\n", data->color->f_r);
-	printf("final - | G | -: %d\n", data->color->f_g);
-	printf("final - | - | -: %d\n", data->color->f_b);
+	i--;
+	if (str[i] != '1')
+		error_data_format(data, "Error order: map is not last!");
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+		i++;
+	if (str[i] == 'F' || str[i] == 'C' || str[i] == 'E' || str[i] == 'N'
+		|| str[i] == 'W' || str[i] == 'S')
+		return ;
+	else
+		error_data_format(data, "Error order: not expected format data!");
 }
 
-void	check_order_data(t_data *data)
+int	is_map_line(char *line)
 {
 	int	i;
-	int	j;
-	char	comp;
-	
+
 	i = ZERO_INIT;
-	j = ZERO_INIT;
-	while(data->file->tab_data[i][j] == ' ' || data->file->tab_data[i][j] == '\t')
-		j++;
-	comp = data->file->tab_data[i][j];
-	//dprintf(2, "TOP ->[%c]\n", comp);
-	if (comp != 'N' && comp != 'S' && comp != 'W' && comp != 'E' && comp != 'F' && comp != 'C')
-			error_order(data);
-	//dprintf(2, "\033[32mSeems good...\033[0m\n");
+	while (line[i] == ' ' || line[i] == 't')
+		i++;
+	if (line[i] == '1' || line[i] == '0')
+		return (1);
+	return (0);
+}
+
+void	split_data_map(t_data *data)
+{
+	int	i;
+	int	map_idx;
+	int	data_idx;
+
+	map_idx = ZERO_INIT;
+	data_idx = ZERO_INIT;
+	i = ZERO_INIT;
+	data->file->map = malloc(sizeof(char *) * data->file->line_map);
+	if (!data->file->map)
+		error_malloc_filemap(data, "Fail to malloc data->file->map!");
+	data->file->infos = malloc(sizeof(char *) * data->file->line_data);
+	if (!data->file->infos)
+		error_malloc_fileinfos(data, "Fail to malloc data->file->infos!");
+	while (i < data->file->total_line)
+	{
+		if (is_map_line(data->file->tab_data[i]))
+			data->file->map[map_idx++] = ft_strdup(data->file->tab_data[i]);
+		else
+			data->file->infos[data_idx++] = ft_strdup(data->file->tab_data[i]);
+		i++;
+	}
+}
+
+void	count_line(t_data *data)
+{
+	int	i;
+
+	i = ZERO_INIT;
+	while (data->file->tab_data[i])
+		i++;
+	data->file->total_line = i;
+	i = 0;
+	while (i < data->file->total_line)
+	{
+		if (is_map_line(data->file->tab_data[i]))
+			data->file->line_map++;
+		else
+			data->file->line_data++;
+		i++;
+	}
 }
 
 void	file_cutter(t_data *data)
 {
-	int	i;
-	
-	i = ZERO_INIT;
 	data->file->tab_data = ft_split(data->file->map_line_cpy, '\n');
 	if (!data->file->tab_data)
 		error_split(data);
-	while(data->file->tab_data[i])
-	{
-		printf("[%s]\n", data->file->tab_data[i]);
-		i++;
-	}
-	check_order_data(data);
-	extract_data(data);
+	count_line(data);
+	split_data_map(data);
+	check_order(data);
 }

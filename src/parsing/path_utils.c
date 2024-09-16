@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/04 10:37:37 by cyferrei          #+#    #+#             */
-/*   Updated: 2024/09/16 15:46:41 by cyferrei         ###   ########.fr       */
+/*   Created: 2024/09/12 10:07:05 by cyferrei          #+#    #+#             */
+/*   Updated: 2024/09/16 15:46:47 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D_lib.h"
 
-char	*new_alloc(t_data *data, char *ptr, int size)
+void	set_path(t_data *data, char **tmp)
 {
-	char	*new;
-
-	new = NULL;
-	free(ptr);
-	new = malloc((size + 1) * sizeof(char));
-	if (!new)
-	{
-		printf("\033[31mError\nFail to allocate memory for map_line!\n\033[0m");
-		close(data->file->fd);
-		free(data->file->color);
-		free(data->file->path);
-		free(data->file);
-		exit(EXIT_FAILURE);
-	}
-	return (new);
+	if (ft_strncmp(tmp[0], "NO", 2) == 0)
+		data->file->path->path_no = ft_strdup(tmp[1]);
+	else if (ft_strncmp(tmp[0], "WE", 2) == 0)
+		data->file->path->path_we = ft_strdup(tmp[1]);
+	else if (ft_strncmp(tmp[0], "EA", 2) == 0)
+		data->file->path->path_ea = ft_strdup(tmp[1]);
+	else if (ft_strncmp(tmp[0], "SO", 2) == 0)
+		data->file->path->path_so = ft_strdup(tmp[1]);
 }
