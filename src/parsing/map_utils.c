@@ -6,11 +6,26 @@
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:29:35 by cyferrei          #+#    #+#             */
-/*   Updated: 2024/09/16 15:47:41 by cyferrei         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:25:18 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D_lib.h"
+
+int	check_around_space(char **map, int i, int j, int line_len[3])
+{
+	if ((j - 1 >= 0 && j - 1 <= line_len[0] && map[i - 1][j - 1] == '0')
+		|| (j <= line_len[0] && map[i - 1][j] == '0') || (j + 1 <= line_len[0]
+			&& map[i - 1][j + 1] == '0') || (j - 1 >= 0 && j - 1 <= line_len[2]
+			&& map[i + 1][j - 1] == '0') || (j <= line_len[2] && map[i
+			+ 1][j] == '0') || (j + 1 <= line_len[2] && map[i + 1][j
+			+ 1] == '0') || (j + 1 < line_len[1] && map[i][j + 1] == '0') || (j
+			- 1 >= 0 && map[i][j - 1] == '0'))
+	{
+		return (1);
+	}
+	return (0);
+}
 
 int	check_in_space(t_data *data, char **map)
 {
@@ -20,26 +35,17 @@ int	check_in_space(t_data *data, char **map)
 	int	line_len[3];
 
 	i = 1;
-	j = ZERO_INIT;
 	last_line = data->file->line_map - 1;
 	while (i < last_line)
 	{
-		dprintf(2, "{%s}\n", map[i]);
 		line_len[0] = ft_strlen(map[i - 1]);
 		line_len[1] = ft_strlen(map[i]);
 		line_len[2] = ft_strlen(map[i + 1]);
 		j = 0;
 		while (map[i][j])
 		{
-			if (ft_strchr(" \t", map[i][j]) && ((j - 1 >= 0 && j
-						- 1 <= line_len[0] && map[i - 1][j - 1] == '0')
-					|| (j <= line_len[0] && map[i - 1][j] == '0') || (j
-						+ 1 <= line_len[0] && map[i - 1][j + 1] == '0') || (j
-						- 1 >= 0 && j - 1 <= line_len[2] && map[i + 1][j
-						- 1] == '0') || (j <= line_len[2] && map[i
-						+ 1][j] == '0') || (j + 1 <= line_len[2] && map[i + 1][j
-						+ 1] == '0') || (j + 1 < line_len[1] && map[i][j
-						+ 1] == '0') || (j - 1 >= 0 && map[i][j - 1] == '0')))
+			if (ft_strchr(" \t", map[i][j]) && check_around_space(map, i, j,
+					line_len))
 				return (0);
 			j++;
 		}
@@ -47,6 +53,40 @@ int	check_in_space(t_data *data, char **map)
 	}
 	return (1);
 }
+// int	check_in_space(t_data *data, char **map)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	last_line;
+// 	int	line_len[3];
+
+// 	i = 1;
+// 	j = ZERO_INIT;
+// 	last_line = data->file->line_map - 1;
+// 	while (i < last_line)
+// 	{
+// 		line_len[0] = ft_strlen(map[i - 1]);
+// 		line_len[1] = ft_strlen(map[i]);
+// 		line_len[2] = ft_strlen(map[i + 1]);
+// 		j = 0;
+// 		while (map[i][j])
+// 		{
+// 			if (ft_strchr(" \t", map[i][j]) && ((j - 1 >= 0 && j
+// 						- 1 <= line_len[0] && map[i - 1][j - 1] == '0')
+// 					|| (j <= line_len[0] && map[i - 1][j] == '0') || (j
+// 						+ 1 <= line_len[0] && map[i - 1][j + 1] == '0') || (j
+// 						- 1 >= 0 && j - 1 <= line_len[2] && map[i + 1][j
+// 						- 1] == '0') || (j <= line_len[2] && map[i
+// 						+ 1][j] == '0') || (j + 1 <= line_len[2] && map[i + 1][j
+// 						+ 1] == '0') || (j + 1 < line_len[1] && map[i][j
+// 						+ 1] == '0') || (j - 1 >= 0 && map[i][j - 1] == '0')))
+// 				return (0);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (1);
+// }
 
 int	check_no_s_walls(t_data *data, char **map)
 {
@@ -60,10 +100,7 @@ int	check_no_s_walls(t_data *data, char **map)
 	while (map[0][j])
 	{
 		if (map[0][j] == '0')
-		{
-			dprintf(2, "line_N\n");
 			return (0);
-		}
 		j++;
 	}
 	j = 0;
@@ -72,10 +109,7 @@ int	check_no_s_walls(t_data *data, char **map)
 	while (map[tmp][j])
 	{
 		if (map[tmp][j] == '0')
-		{
-			dprintf(2, "line_S\n");
 			return (0);
-		}
 		j++;
 	}
 	return (1);
