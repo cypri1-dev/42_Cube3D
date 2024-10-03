@@ -51,5 +51,8 @@ C 225,30,0
 - Camera Rotation: Left/Right arrow keys.
 - Exit: Esc or click on the close button.
 
+## 📚 Useful Resources
+- [Wolfenstein 3D - Original Game](http://users.atw.hu/wolf3d/)
+
 ##
 Feel free to add more details or make any modifications as needed!

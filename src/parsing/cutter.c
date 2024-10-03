@@ -6,7 +6,7 @@
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 10:10:18 by cyferrei          #+#    #+#             */
-/*   Updated: 2024/09/17 14:57:06 by cyferrei         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:54:17 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	check_order(t_data *data)
 	char	*str;
 
 	i = ZERO_INIT;
+	if (data->file->map_line_cpy[0] == '\0')
+		error_data_format(data, "Nothing in file!");
 	str = data->file->map_line_cpy;
 	while (str[i])
 		i++;
@@ -48,28 +50,8 @@ int	is_map_line(char *line)
 
 void	split_data_map(t_data *data)
 {
-	int	i;
-	int	map_idx;
-	int	data_idx;
-
-	map_idx = ZERO_INIT;
-	data_idx = ZERO_INIT;
-	i = ZERO_INIT;
-	data->file->map = malloc(sizeof(char *) * data->file->line_map);
-	if (!data->file->map)
-		error_malloc_filemap(data, "Fail to malloc data->file->map!");
-	data->file->infos = malloc(sizeof(char *) * data->file->line_data);
-	if (!data->file->infos)
-		error_malloc_fileinfos(data, "Fail to malloc data->file->infos!");
-	print_split(data->file->tab_data);
-	while (i < data->file->total_line)
-	{
-		if (is_map_line(data->file->tab_data[i]))
-			data->file->map[map_idx++] = ft_strdup(data->file->tab_data[i]);
-		else
-			data->file->infos[data_idx++] = ft_strdup(data->file->tab_data[i]);
-		i++;
-	}
+	allocate_file_maps(data);
+	process_data_map(data);
 }
 
 void	count_line(t_data *data)
