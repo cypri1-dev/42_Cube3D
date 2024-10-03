@@ -6,7 +6,7 @@
 /*   By: cyferrei <cyferrei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:20:45 by cyferrei          #+#    #+#             */
-/*   Updated: 2024/10/03 14:43:17 by cyferrei         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:59:20 by cyferrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,8 @@ typedef struct s_data
 	t_mlx		mlx;
 	int			cell_width;
 	int			cell_height;
+	int			cell_hy;
+	int			cell_wx;
 	t_texture	no;
 	t_texture	so;
 	t_texture	ea;
@@ -177,6 +179,16 @@ typedef struct s_data
 	char		textures[3];
 	int			lgbt;
 	int			lgbt_activated;
+	int	r1;
+	int	g1;
+	int	b1;
+	int	r2;
+	int	g2;
+	int	b2;
+	int	r;
+	int	g;
+	int	b;
+	int local_percentage;
 }				t_data;
 
 /*strings functions*/
@@ -286,14 +298,11 @@ void			init_player(t_data *data);
 double			get_angle_posplayer(char player_dir);
 void			ray_cast_radians(t_data *data);
 void			img_pix_put(t_data *data, int x, int y, int color);
-void			draw_rectangle(t_data *data, int x, int y, int width,
-					int height, int color);
+void	draw_rectangle(t_data *data, int width, int height,int color);
 int				update_player_pos(t_data *data, int player_x, int player_y);
 int				minimap_render(void *param);
 int				cpy_map(t_data *data);
 int				update_player_pos(t_data *data, int player_x, int player_y);
-void			draw_rectangle(t_data *data, int x, int y, int width,
-					int height, int color);
 int				key_handler(int keycode, t_data *data);
 int				key_release_handler(int keycode, t_data *data);
 void			draw_vector(t_data *data, int pos1[2], int pos2[2], int color);
@@ -302,4 +311,5 @@ void			draw_fov(t_data *data);
 void			draw_line_fov_minim(t_data *data, int pos1[2], int pos2[2],
 					int color);
 void			load_texture(t_data *data);
+int	get_color_component(int color, int component, t_data *data);
 #endif
